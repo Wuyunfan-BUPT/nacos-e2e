@@ -10,7 +10,6 @@ ENV MODE="cluster" \
     FUNCTION_MODE="all" \
     JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk" \
     NACOS_USER="nacos" \
-    JAVA="/usr/lib/jvm/java-1.8.0-openjdk/bin/java" \
     JVM_XMS="1g" \
     JVM_XMX="1g" \
     JVM_XMN="512m" \
@@ -25,7 +24,7 @@ ENV MODE="cluster" \
 ARG HOT_FIX_FLAG=""
 
 WORKDIR $BASE_DIR
-    
+
 ADD ./nacos-server-*.tar.gz /home/
 
 RUN  cd /etc/yum.repos.d \
@@ -38,6 +37,17 @@ RUN rm -rf /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.ex
     && yum update -y \
     && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel wget iputils nc vim libcurl \
     && java -version
+
+RUN mkdir -p /usr/lib/jvm \
+    && wget https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jdk_x64_linux_hotspot_17.0.11_9.tar.gz \
+    && tar -xzvf OpenJDK17U-jdk_x64_linux_hotspot_17.0.11_9.tar.gz -C /usr/lib/jvm \
+    && mv /usr/lib/jvm/jdk-17.0.11+9 /usr/lib/jvm/java-17-openjdk \
+    && rm OpenJDK17U-jdk_x64_linux_hotspot_17.0.11_9.tar.gz \
+    && java -version
+
+# 默认使用JDK17，可通过环境变量切换
+ENV JAVA_HOME="/usr/lib/jvm/java-17-openjdk" \
+    JAVA="/usr/lib/jvm/java-17-openjdk/bin/java"
 
 RUN yum autoremove -y wget \
     && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone \
