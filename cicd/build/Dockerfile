@@ -23,14 +23,16 @@ ENV MODE="cluster" \
     TOMCAT_ACCESSLOG_ENABLED="false" \
     TIME_ZONE="Asia/Shanghai"
 
-ARG NACOS_VERSION=3.1.0
+# ARG NACOS_VERSION=3.1.0
 ARG HOT_FIX_FLAG=""
 
 WORKDIR $BASE_DIR
 
+ADD ./nacos-server-*.tar.gz /home/
+
 # 下载并安装 Nacos
-RUN set -x \
-    && rm -rf nacos-server.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql \
+RUN rm -rf /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql \
+    && set -x \
     && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
 
 ADD bin/docker-startup.sh bin/docker-startup.sh
