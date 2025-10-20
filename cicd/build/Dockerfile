@@ -31,8 +31,9 @@ WORKDIR $BASE_DIR
 ADD ./nacos-server-*.tar.gz /home/
 
 # 下载并安装 Nacos
-RUN rm -rf /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql \
-    && set -x \
+RUN set -x \
+    && tar -xzvf /home/nacos-server-*.tar.gz -C /home \
+    && rm -rf /home/nacos-server-*.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql \
     && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
 
 ADD bin/docker-startup.sh bin/docker-startup.sh
