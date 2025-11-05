@@ -32,6 +32,7 @@ ADD ./nacos-server-*.tar.gz /home/
 
 # 下载并安装 Nacos
 RUN set -x \
+    && ls -l \
     && tar -xzvf /home/nacos-server-*.tar.gz -C /home \
     && rm -rf /home/nacos-server-*.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql \
     && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
