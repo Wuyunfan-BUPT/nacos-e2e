@@ -24,6 +24,11 @@ nacos:
   domainName: cluster.local
   preferhostmode: hostname
   serverPort: 8848
+  consolePort: 8080
+  mcpPort: 9080
+  authToken: nil
+  identityKey: nil
+  identityValue: nil
   health:
     enabled: false
   auth:

@@ -70,7 +70,7 @@ spec:
               port: {{ .Values.nacos.serverPort }}
               path: /nacos/v1/console/health/liveness
           ports:
-            - name: http
+            - name: client-http
               containerPort: {{ .Values.nacos.serverPort }}
               protocol: TCP
             - containerPort: {{ add .Values.nacos.serverPort 1000}}
@@ -79,6 +79,11 @@ spec:
               name: raft-rpc
             - containerPort: 7848
               name: old-raft-rpc
+            - containerPort: {{ .Values.nacos.consolePort}}
+              name: console
+              protocol: TCP
+            - containerPort: {{ .Values.nacos.mcpPort }}
+              name: mcp
           resources:
           {{- toYaml .Values.resources | nindent 12 }}
           env:
