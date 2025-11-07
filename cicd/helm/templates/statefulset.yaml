@@ -57,18 +57,18 @@ spec:
             initialDelaySeconds: 180
             periodSeconds: 5
             timeoutSeconds: 10
-            httpGet:
+            tcpGet:
               scheme: HTTP
-              port: {{ .Values.nacos.serverPort }}
-              path: /nacos/v3/console/health/readiness
+              port: {{ .Values.nacos.consolePort }}
+              path: /nacos/v1/console/health/readiness
           livenessProbe:
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 10
-            httpGet:
-              scheme: HTTP
-              port: {{ .Values.nacos.serverPort }}
-              path: /nacos/v3/console/health/liveness
+            tcpGet:
+              scheme: TCP
+              port: {{ .Values.nacos.consolePort }}
+              path: /nacos/v1/console/health/liveness
           ports:
             - name: client-http
               containerPort: {{ .Values.nacos.serverPort }}
