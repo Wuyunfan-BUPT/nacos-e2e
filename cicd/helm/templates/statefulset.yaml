@@ -68,7 +68,7 @@ spec:
             httpGet:
               scheme: HTTP
               port: {{ .Values.nacos.serverPort }}
-              path: /nacos/v1/console/health/liveness
+              path: /nacos/v3/console/health/liveness
           ports:
             - name: client-http
               containerPort: {{ .Values.nacos.serverPort }}
