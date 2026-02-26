@@ -57,18 +57,16 @@ spec:
             initialDelaySeconds: 180
             periodSeconds: 5
             timeoutSeconds: 10
-            tcpGet:
+            httpGet:
               scheme: HTTP
               port: {{ .Values.nacos.consolePort }}
-              path: /nacos/v1/console/health/readiness
+              path: /v3/console/health/readiness
           livenessProbe:
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 10
-            tcpGet:
-              scheme: TCP
+            tcpSocket:
               port: {{ .Values.nacos.consolePort }}
-              path: /nacos/v1/console/health/liveness
           ports:
             - name: client-http
               containerPort: {{ .Values.nacos.serverPort }}
@@ -101,6 +99,18 @@ spec:
               value: {{ .Values.nacos.auth.identity.key | quote }}
             - name: NACOS_AUTH_IDENTITY_VALUE
               value: {{ .Values.nacos.auth.identity.value | quote }}
+            {{- if .Values.nacos.jvm }}
+            - name: JVM_XMS
+              value: {{ .Values.nacos.jvm.xms | quote }}
+            - name: JVM_XMX
+              value: {{ .Values.nacos.jvm.xmx | quote }}
+            - name: JVM_XMN
+              value: {{ .Values.nacos.jvm.xmn | quote }}
+            - name: JVM_MS
+              value: {{ .Values.nacos.jvm.ms | quote }}
+            - name: JVM_MMS
+              value: {{ .Values.nacos.jvm.mms | quote }}
+            {{- end }}
             {{- if eq .Values.global.mode "standalone" }}
             - name: MODE
               value: "standalone"
@@ -152,7 +162,7 @@ spec:
             {{else}}
             - name: EMBEDDED_STORAGE
               value: embedded
-          {{end}}
+            {{end}}
           volumeMounts:
             - name: data
               mountPath: /home/nacos/plugins/peer-finder
@@ -175,4 +185,3 @@ spec:
       spec:
   {{- toYaml .Values.persistence.data | nindent 8 }}
   {{- end }}
-

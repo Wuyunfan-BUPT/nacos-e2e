@@ -47,16 +47,22 @@ nacos:
       username: "nacos"
       password: "nacos"
       param: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false
-
-persistence:
-  enabled: false
-  data:
-    accessModes:
-      - ReadWriteOnce
-    storageClassName: manual
-    resources:
-      requests:
-        storage: 5Gi
+  # JVM Memory Configuration for JDK 17
+  jvm:
+    xms: "1g"
+    xmx: "1g"
+    xmn: "512m"
+    ms: "128m"
+    mms: "320m"
+  persistence:
+    enabled: false
+    data:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: manual
+      resources:
+        requests:
+          storage: 5Gi
 
 
 service:
@@ -96,7 +102,7 @@ resources:
   #   memory: 128Mi
   requests:
     cpu: 500m
-    memory: 2Gi
+    memory: 3Gi
 annotations: { }
 
 nodeSelector: { }
@@ -104,6 +110,3 @@ nodeSelector: { }
 tolerations: [ ]
 
 affinity: { }
-
-
-
